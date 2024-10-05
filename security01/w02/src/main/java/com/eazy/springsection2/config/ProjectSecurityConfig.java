@@ -18,8 +18,12 @@ public class ProjectSecurityConfig {
         http.authorizeHttpRequests((request)-> request
                 .requestMatchers("/myAccount", "/myBalance", "/myLoans", "myCards").authenticated()
                 .requestMatchers("/notices", "/contact", "/error").permitAll());
+        /*http.formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable());*/
+        /*http.httpBasic(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable());*/
+
         http.formLogin(Customizer.withDefaults());
         http.httpBasic(Customizer.withDefaults());
+
         return http.build();
     }
 }
