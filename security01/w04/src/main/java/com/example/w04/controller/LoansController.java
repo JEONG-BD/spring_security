@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoansController {
 
-    @GetMapping("/myLoan")
+    @GetMapping("/myLoans")
     public String getLoanDetail(){
-        return "Welcome to spring application with out security";
+        return "Welcome to My Loan";
     }
 }
