@@ -13,8 +13,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
+
+import javax.sql.DataSource;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -41,14 +44,19 @@ public class ProjectSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService(){
-        UserDetails user = User.withUsername("root").password("{noop}12345").authorities("read").build();
-        UserDetails admin = User.withUsername("admin").password("{bcrypt}$2a$12$CUu1xuAt3bgxLsgx6MI39eehB6NPxmixFxSHL2RrZttAzzXrVBYNi").authorities("admin").build();
-        //1357b
-        return new InMemoryUserDetailsManager(user, admin);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//        UserDetails user = User.withUsername("root").password("{noop}12345").authorities("read").build();
+//        UserDetails admin = User.withUsername("admin").password("{bcrypt}$2a$12$Cn7YjjpWO3uGe0KeUBkLeulK6d9tbmZNBRnBXpm8Er1251IcE.2n2").authorities("admin").build();
+//        //1357
+//        return new InMemoryUserDetailsManager(user, admin);
+//    }
 
+    @Bean
+    public UserDetailsService userDetailsService(DataSource dataSource){
+        return new JdbcUserDetailsManager(dataSource);
+
+    }
     @Bean
     public PasswordEncoder passwordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
